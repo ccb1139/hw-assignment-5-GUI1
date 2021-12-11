@@ -1,0 +1,75 @@
+#mainDiv{
+    width: 1170px;
+    height: 500px;
+    margin: auto;
+}
+
+#board_row { 
+    height: 150px;
+    position: relative;
+}
+.boardTile { 
+    float: left;
+    position:absolute;
+    width: 75px;
+    height: 75px;
+    border: 3px;
+    border-style: solid; 
+}
+
+
+#holder{
+    position: absolute;
+    margin-top: -40px;
+}
+#pieceHolder{
+    position:relative;
+    border-style: solid; 
+    width: 640px;
+    height: 75px;
+    
+}
+
+#pieces{
+    position: relative;
+    width: 640px;
+    height: 182px;
+
+    margin: auto;
+    clear: both;
+}
+.gamePiece { 
+    cursor: move;
+    position: absolute;
+    float:left;
+    height: 75px;
+    width: 75px;
+}
+
+#gameInfo{
+    display: block;
+    background-color:indianred;
+    border: 5px;
+    border-style: solid;
+    width: fit-content;
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.GameBtn{
+    display: block;
+    margin: auto;
+    width: 100px;
+    
+}
+
+
+
+
