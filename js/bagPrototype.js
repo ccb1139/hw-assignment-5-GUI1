@@ -51,14 +51,16 @@ class Bag{
         }
     }
     drawPiece(){
-        if(this.pBag.length < 8){
-            //this.refillBag();
+        if(this.pBag.length > 0){
+            var draw = Math.round(Math.random() * ((this.pBag.length - 1) + 0) + 0);
+        
+            var letter = this.pBag[draw].getLetter();
+            this.pBag.splice(draw, 1);
+            
+            return letter;
+        } else {
+            return "noPiece";
         }
-        var draw = Math.round(Math.random() * ((this.pBag.length - 1) + 0) + 0);
         
-        var letter = this.pBag[draw].getLetter();
-        this.pBag.splice(draw, 1);
-        
-        return letter;
     }
 }

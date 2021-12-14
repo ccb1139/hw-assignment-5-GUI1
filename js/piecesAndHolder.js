@@ -1,4 +1,5 @@
 const dockPos = [];
+const currentPos = [];
 $(window).on('load', function() {
     
     //$("#pieces").on('dragstart', function(event) { event.preventDefault(); });
@@ -15,15 +16,6 @@ $(window).on('load', function() {
     var position = $("#holder").position();
     position.left += 45;
 
-    
-    $(".gamePiece").draggable({ 
-        create: function(event, ui) {
-            var position = $(this).position();
-            dockPos.push(position);
-            console.log(position);
-        }
-    });
-
     //Set inital position and tile
     for(let i = 1; i < 8; i++){
         var pieceId = "#piece" + i;
@@ -31,6 +23,9 @@ $(window).on('load', function() {
         var gamePieceLt = gameBag.drawPiece();
         if(gamePieceLt == " "){
             var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_Blank.jpg")';
+        } else if( gamePieceLt == "noPiece"){
+            var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_NP.png")';
+            $(pieceId).draggable( "destory" );
         } else {
             var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_' + gamePieceLt + '.jpg")';
         }
@@ -45,8 +40,14 @@ $(window).on('load', function() {
         var position = $(pieceId).position();
         position.top = position.top;
         position.left += $(pieceId).width() + 5;
+        var offset = $(pieceId).offset();
+        dockPos.push(offset);
+        currentPos.push(offset);
+        
+
         //console.log($(pieceId).width());
         //console.log(position);
+        //console.log(offset);
     }
 
     //Piece Holder droppable
@@ -59,14 +60,52 @@ $(window).on('load', function() {
 
         });
     });
+    function fixPos(_this, ptmp){
+        $(_this).simulate("drag", {
+            dx: ptmp.top + 100,
+            dy: ptmp.left + 1
+        });
+    }
     //Pieces draggable
     $( function() {
         $( ".gamePiece" ).draggable({
             snap: "#pieceHolder",
             snapMode: "inner",
             snapTolerance: 10,
-            revert: 'invalid',
+            revert: function (valid) {
+                var tmpNameT = String($(this).attr("id"));
+                var indTmp = tmpNameT.slice(-1);
+                var pPosTmp = $(this).offset();
+                var pPosTmp2 = $(this).offset();
+                if(!valid){
+                    setTimeout(() => {revertHelper(tmpNameT, indTmp, pPosTmp);}, 10); 
+                } else {
+                    currentPos[indTmp - 1] = pPosTmp;
+                    console.log(pPosTmp);
+                }
+            },
+            stop: function(event, ui) {
+                var tmpNameT = String($(this).attr("id"));
+                var indTmp = tmpNameT.slice(-1)
+                var pPosTmp = $(this).offset();
+
+                
+
+                //console.log((ui));
+                //console.log(currentPos);
+            }
+
         });
     });
+
+    function revertHelper(name, index, curPos){
+        var tmpName = "#" + name;
+        var ndy =  currentPos[index - 1].top - curPos.top;
+        var ndx = currentPos[index - 1].left - curPos.left ;
+        $(tmpName).simulate("drag", {
+            dx: ndx,
+            dy: ndy,
+        });
+    }
 
 });
