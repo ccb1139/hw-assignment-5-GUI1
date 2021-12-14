@@ -51,7 +51,7 @@ class Bag{
         }
     }
     drawPiece(){
-        if(this.pBag.length > 0){
+        if(this.pBag.length >= 0){
             var draw = Math.round(Math.random() * ((this.pBag.length - 1) + 0) + 0);
         
             var letter = this.pBag[draw].getLetter();
