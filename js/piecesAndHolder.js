@@ -1,14 +1,12 @@
+// Arrays to hold the original doc position and the last dropped postion of each piece
 const dockPos = [];
 const currentPos = [];
 $(window).on('load', function() {
-    
-    //$("#pieces").on('dragstart', function(event) { event.preventDefault(); });
-
     // Create piece holder
     $("#pieces").append('<div id="pieceHolder"></div>');
     $("#pieceHolder").append('<img src="graphics_data/scrabble-tile-holder-406774_640.png" id="holder">');
 
-    // Create pieces
+    // Create pieces and set their positions 
     for(let i = 1; i < 8; i++){
         var pieceId = "piece" + i;
         $("#pieceHolder").append('<div id="' + pieceId + '" class = gamePiece></div>');
@@ -16,7 +14,7 @@ $(window).on('load', function() {
     var position = $("#holder").position();
     position.left += 45;
 
-    //Set inital position and tile
+    //Set inital position and tile image 
     for(let i = 1; i < 8; i++){
         var pieceId = "#piece" + i;
 
@@ -43,11 +41,6 @@ $(window).on('load', function() {
         var offset = $(pieceId).offset();
         dockPos.push(offset);
         currentPos.push(offset);
-        
-
-        //console.log($(pieceId).width());
-        //console.log(position);
-        //console.log(offset);
     }
 
     //Piece Holder droppable
@@ -60,18 +53,14 @@ $(window).on('load', function() {
 
         });
     });
-    function fixPos(_this, ptmp){
-        $(_this).simulate("drag", {
-            dx: ptmp.top + 100,
-            dy: ptmp.left + 1
-        });
-    }
     //Pieces draggable
     $( function() {
         $( ".gamePiece" ).draggable({
             snap: "#pieceHolder",
             snapMode: "inner",
             snapTolerance: 10,
+            // Custom revert fucntion that uses jquery simulate to drag the piece back
+            // to the last valid position the piece was in
             revert: function (valid) {
                 var tmpNameT = String($(this).attr("id"));
                 var indTmp = tmpNameT.slice(-1);
@@ -84,20 +73,17 @@ $(window).on('load', function() {
                     console.log(pPosTmp);
                 }
             },
+            //Saves the last valid piece position
             stop: function(event, ui) {
                 var tmpNameT = String($(this).attr("id"));
                 var indTmp = tmpNameT.slice(-1)
                 var pPosTmp = $(this).offset();
-
-                
-
-                //console.log((ui));
-                //console.log(currentPos);
             }
 
         });
     });
 
+    // Used to move the piece 
     function revertHelper(name, index, curPos){
         var tmpName = "#" + name;
         var ndy =  currentPos[index - 1].top - curPos.top;

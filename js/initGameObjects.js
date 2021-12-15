@@ -1,3 +1,5 @@
+// Reads the json and puts into array. Must be put outside of onWindowLoad so the
+// array is ready and filled by the time everything loads
 var gameBag = new Bag();
 $.getJSON("graphics_data/pieces.json", function (bag) { 
     $.each(bag.pieces, function(pieces, values){
