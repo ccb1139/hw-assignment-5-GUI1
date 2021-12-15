@@ -30,7 +30,7 @@ $(window).on('load', function () {
 					break;
 			};
 		}
-		//positions the board 
+		//positions the board tiles in a row, all next to eachother 
 
 		var position = $("#01_tile").position();
 		for (let i = 1; i < 16; i++) {
@@ -44,25 +44,30 @@ $(window).on('load', function () {
 				"top": position.top,
 				"left": position.left,
 			})
-			//position = $(tile).position();
 			position.left += 78;
-
 		}
+		//Prevents the indvivual tiles from being dragged around
 		$(".boardTileImg").on('dragstart', function (event) { event.preventDefault(); });
 	});
 
-
+	// This is for all the events that happen around and on the board
 	$(function () {
 		//BOARD CREATION IS DONE NOW EVENTS
+
+		//Arrays to keep track of which pieces are on the board and which pieces are on the dock
 		const OnBoard = [];
 		const onDock = ["piece1", "piece2", "piece3", "piece4", "piece5", "piece6", "piece7"];
 
+		//keeps track of the occupied tiles and which pices occupy them
 		const occTiles = ["-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1"];
+
+		//The order of the tiles for calculating score.
 		const tileOrder = [1, 1, 2, 1, 1, 1, 3, 1, 3, 1, 1, 1, 2, 1, 1];
 
 		var fullScore = 0;
 		var gameOverStat = false;
 		
+		//For calculating the avaible tiles.
 		$("#holder").droppable({
 			drop: function (event, ui) {
 				avilTiles();
@@ -75,7 +80,10 @@ $(window).on('load', function () {
 		$(".boardTile").droppable({
 			//When a tile is dropped
 			drop: function (event, ui) {
+				//If a tile is occupied dont accept another tile
 				$(this).droppable('option', 'accept', ui.draggable);
+
+				// Saves the position of the dropped tile
 				ui.draggable.position({ of: $(this) });
 
 				//Adds to On board array when dropped
@@ -90,9 +98,11 @@ $(window).on('load', function () {
 				var name = $(this).attr('id');
 				var tileArrId = Number(name[0] + name[1]) - 1;
 				occTiles[tileArrId] = $(ui.draggable).attr('id');
-				console.log(name);
 
+				// Calcs the score
 				$("#Score").html("Score: " + fullScore + " + ( " + calcScore() + " )");
+
+				// Updates the avaivble tiles
 				avilTiles();
 			},
 
@@ -106,17 +116,20 @@ $(window).on('load', function () {
 						OnBoard.splice(i, 1);
 					}
 				}
+
+				//Updates the occTiles Array
 				var name = $(this).attr('id');
 				var tileArrId = Number(name[0] + name[1]) - 1;
 				occTiles[tileArrId] = "-1";
 
 
-
+				//Calcs the score
 				$("#Score").html("Score: " + fullScore + " + ( " + calcScore() + " )");
 				avilTiles();
 			}
 		});
 
+		// For returning a string version of an id
 		function tileIdHelper(ind){
 			var tmpId = "";
 			if(ind > 9) {
@@ -129,10 +142,9 @@ $(window).on('load', function () {
 
 		//Finds and sets avaivlbe tiles
 		function avilTiles(){
-			console.log(occTiles);
+			// Checks that all the tiles are empty
 			var allEmpty = true;
 			for(let i = 0; i < occTiles.length - 1; i++){
-				//console.log("i: " + i + " occTiles[i]: " + occTiles[i] + " occTiles[i + 1]: " + occTiles[i + 1]);
 				if(occTiles[i] == "-1" && occTiles[i] == occTiles[i + 1]){
 					allEmpty = true;
 				} else {
@@ -140,32 +152,37 @@ $(window).on('load', function () {
 					break;
 				}
 			}
+			// If all the tiles are empty enable all droppables and set the border
+			// colors to green
 			if(allEmpty == true){
 				$(".boardTile").css({
 					"border-color": "greenyellow" 
 				});
 				$(".boardTile").droppable("enable");
 			} else {
+				//If they arent all empty set all border colors to black and disable 
+				// all tiles (This is changed in a few lines)
 				$(".boardTile").css({
 					"border-color": "black" 
 				})
 				$(".boardTile").droppable("disable");
 				for(let i = 0; i < occTiles.length; i++){
+					// Varbles for the tile ids of the current tile, previous tile and next tile
 					var avlTileIdL = "#" + tileIdHelper(i) + "_tile";
 					var avlTileIdC = "#" + tileIdHelper(i+1) + "_tile";
 					var avlTileIdR = "#" + tileIdHelper(i+2) + "_tile";
+					
+					// If there is a piece on a tile then enable the droppable and change the border color
 					if(occTiles[i] != "-1"){
 						$(avlTileIdC).droppable("enable");
-						console.log("occTiles["+i+"]: " + occTiles[i]);
-						console.log("L: " + avlTileIdL + " C: " + avlTileIdC + " R: " + avlTileIdR);
-						console.log("occTiles["+(i + -1) +"]: " + occTiles[i-1]);
-						console.log("occTiles["+(i + 1) +"]: " + occTiles[i+1]);
+						//If the tile to the left is empty then enable and change color
 						if(occTiles[i-1] == "-1"){
 							$(avlTileIdL).css({
 								"border-color": "greenyellow" 
 							});
 							$(avlTileIdL).droppable("enable");
 						}
+						//If the tile to the right is empty then enable and change color
 						if(occTiles[i+1] == "-1"){
 							$(avlTileIdR).css({
 								"border-color": "greenyellow" 
@@ -180,15 +197,16 @@ $(window).on('load', function () {
 						}
 					}
 				}
-			}
-			//console.log(allEmpty);	
+			}	
 		}
-		//Calc Score and displays current word
 
+		//Calc Score and displays current word
 		function calcScore() {
 			var curWord = "";
 			var score = 0;
 			for (let i = 0; i < occTiles.length; i++) {
+				// If the tile isnt occupied and there is a tile either to the right or left
+				// of the current tile add to the score edge tiles are accounted for
 				if (occTiles[i] != "-1") {
 					if((occTiles[i+1] != "-1" && occTiles[i+1] != null) || 
 						(occTiles[i-1] != "-1" && occTiles[i-1] != null)){
@@ -210,18 +228,20 @@ $(window).on('load', function () {
 								score += (Number(gameBag.getPieceValue(name)) * 2);
 								break;
 						};
+						//Adds to the current word string 
 						curWord += name;
 					}
 				}
 			}
+			// Displays current word
 			$("#currentWord").html("Current Word: "+ curWord);
 			return score;
 		}
 
-		//Save Word
+		//Button to save the current word to the score and redraw pieces
 		$("#nextWordBtn").button();
 		$("#nextWordBtn").click(function (e) {
-
+			// Temp onboard array so it doesnt get changed when the board is cleared
 			var tmpOnBoard = [];
 			for(let j = 0; j < OnBoard.length; j++){
 				tmpOnBoard.push(OnBoard[j]);
@@ -230,6 +250,10 @@ $(window).on('load', function () {
 			fullScore += calcScore();
 			$("#Score").html("Score: " + fullScore + " + ( " + calcScore() + " )");
 			
+			// Calculates the word score and puts the pieces back on the dock
+			// Uses the jqueiry simulate libaray to move the pieces back to the dock
+			// Calculates the positionbased off of the current postion subtracted by the 
+			// Position that the piece started in
 			for(let i = 0; i < tmpOnBoard.length; i++){
 				var pId = "#" + tmpOnBoard[i];
 				var index = Number(tmpOnBoard[i].substr(5, 1)) - 1;
@@ -254,15 +278,16 @@ $(window).on('load', function () {
 					"background-image": imgPath,	
 				})
 			}
+			//Displays the remaining pieces and check if the game can continue
 			$("#remainTiles").html("Remaining Tiles: " + gameBag.getAmount());
 			checkGameOver();
-			//console.log(gameBag.getAmount());
-						
 		});
 		
-		//RE ROLL
+		// A button to re-draw the tiles on the rack
 		$("#reRollBtn").button();
 		$("#reRollBtn").click(function (e) {
+			// for all the pieces check if they are on the dock and if they are on the dock then
+			// re-drwa them.
 			for (let i = 1; i < 8; i++) {
 				var pieceId = "piece" + i;
 				for (let j = 0; j < onDock.length; j++) {
@@ -285,14 +310,14 @@ $(window).on('load', function () {
 					}
 				}
 			}
+			//Display the remaining tiles and check if the game is over
 			$("#remainTiles").html("Remaining Tiles: " + gameBag.getAmount());
 			checkGameOver();
-			console.log(gameBag);
 		});
 
 		//CHECK GAME OVER
+		// If the game is over if it is then display the game over screen 
 		function checkGameOver(){
-			console.log(gameOverStat);
 			if(gameOverStat == false){
 				if(gameBag.getAmount() < 1){
 					$("#currentWord").hide();
@@ -312,7 +337,7 @@ $(window).on('load', function () {
 		}
 
 
-		//RESTART BUTTON
+		//Refreshes the page to restart the game
 		$("#restartBtn").button();
 		$("#restartBtn").click(function (e) {
 			if(window.confirm("Are you sure you want to restart?")){
