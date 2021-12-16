@@ -14,13 +14,13 @@ This file contains the code to set up the pieces and piece holder
 // Arrays to hold the original doc position and the last dropped postion of each piece
 const dockPos = [];
 const currentPos = [];
-$(window).on('load', function() {
+$(window).on('load', function () {
     // Create piece holder
     $("#pieces").append('<div id="pieceHolder"></div>');
     $("#pieceHolder").append('<img src="graphics_data/scrabble-tile-holder-406774_640.png" id="holder">');
 
     // Create pieces and set their positions 
-    for(let i = 1; i < 8; i++){
+    for (let i = 1; i < 8; i++) {
         var pieceId = "piece" + i;
         $("#pieceHolder").append('<div id="' + pieceId + '" class = gamePiece></div>');
     }
@@ -28,25 +28,25 @@ $(window).on('load', function() {
     position.left += 45;
 
     //Set inital position and tile image 
-    for(let i = 1; i < 8; i++){
+    for (let i = 1; i < 8; i++) {
         var pieceId = "#piece" + i;
 
         var gamePieceLt = gameBag.drawPiece();
-        if(gamePieceLt == " "){
+        if (gamePieceLt == " ") {
             var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_Blank.jpg")';
-        } else if( gamePieceLt == "noPiece"){
+        } else if (gamePieceLt == "noPiece") {
             var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_NP.png")';
-            $(pieceId).draggable( "destory" );
+            $(pieceId).draggable("destory");
         } else {
             var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_' + gamePieceLt + '.jpg")';
         }
-        
+
         $(pieceId).css({
-            "top":position.top,
-            "left":position.left,
+            "top": position.top,
+            "left": position.left,
             "background-image": imgPath,
             "background-size": "cover"
-            
+
         })
         var position = $(pieceId).position();
         position.top = position.top;
@@ -57,18 +57,18 @@ $(window).on('load', function() {
     }
 
     //Piece Holder droppable
-    $( function() {
-        $( "#holder" ).droppable({
-            drop: function(event, ui){
-                
-                
+    $(function () {
+        $("#holder").droppable({
+            drop: function (event, ui) {
+
+
             },
 
         });
     });
     //Pieces draggable
-    $( function() {
-        $( ".gamePiece" ).draggable({
+    $(function () {
+        $(".gamePiece").draggable({
             snap: "#pieceHolder",
             snapMode: "inner",
             snapTolerance: 10,
@@ -79,14 +79,14 @@ $(window).on('load', function() {
                 var indTmp = tmpNameT.slice(-1);
                 var pPosTmp = $(this).offset();
                 var pPosTmp2 = $(this).offset();
-                if(!valid){
-                    setTimeout(() => {revertHelper(tmpNameT, indTmp, pPosTmp);}, 10); 
+                if (!valid) {
+                    setTimeout(() => { revertHelper(tmpNameT, indTmp, pPosTmp); }, 10);
                 } else {
                     currentPos[indTmp - 1] = pPosTmp;
                 }
             },
             //Saves the last valid piece position
-            stop: function(event, ui) {
+            stop: function (event, ui) {
                 var tmpNameT = String($(this).attr("id"));
                 var indTmp = tmpNameT.slice(-1)
                 var pPosTmp = $(this).offset();
@@ -96,10 +96,10 @@ $(window).on('load', function() {
     });
 
     // Used to move the piece 
-    function revertHelper(name, index, curPos){
+    function revertHelper(name, index, curPos) {
         var tmpName = "#" + name;
-        var ndy =  currentPos[index - 1].top - curPos.top;
-        var ndx = currentPos[index - 1].left - curPos.left ;
+        var ndy = currentPos[index - 1].top - curPos.top;
+        var ndx = currentPos[index - 1].left - curPos.left;
         $(tmpName).simulate("drag", {
             dx: ndx,
             dy: ndy,

@@ -13,10 +13,10 @@ This file contains the code for the randomly selected background
 $(document).ready(function () {
     //Choses a random number for the background 
     var backgroundImgNum = Math.round(Math.random() * (3 - 1) + 1);
-    
+
     //Sets the background of the body with some options to make it so the imagine always covers 
     //The background
-    switch(backgroundImgNum){
+    switch (backgroundImgNum) {
         case 1:
 
             $("body").css({

@@ -82,7 +82,7 @@ $(window).on('load', function () {
 
 		var fullScore = 0;
 		var gameOverStat = false;
-		
+
 		//For calculating the avaible tiles.
 		$("#holder").droppable({
 			drop: function (event, ui) {
@@ -146,9 +146,9 @@ $(window).on('load', function () {
 		});
 
 		// For returning a string version of an id
-		function tileIdHelper(ind){
+		function tileIdHelper(ind) {
 			var tmpId = "";
-			if(ind > 9) {
+			if (ind > 9) {
 				tmpId = ind;
 			} else {
 				tmpId = "0" + ind;
@@ -157,11 +157,11 @@ $(window).on('load', function () {
 		}
 
 		//Finds and sets avaivlbe tiles
-		function avilTiles(){
+		function avilTiles() {
 			// Checks that all the tiles are empty
 			var allEmpty = true;
-			for(let i = 0; i < occTiles.length - 1; i++){
-				if(occTiles[i] == "-1" && occTiles[i] == occTiles[i + 1]){
+			for (let i = 0; i < occTiles.length - 1; i++) {
+				if (occTiles[i] == "-1" && occTiles[i] == occTiles[i + 1]) {
 					allEmpty = true;
 				} else {
 					allEmpty = false;
@@ -170,55 +170,55 @@ $(window).on('load', function () {
 			}
 			// If all the tiles are empty enable all droppables and set the border
 			// colors to green
-			if(allEmpty == true){
+			if (allEmpty == true) {
 				$(".boardTile").css({
-					"border-color": "greenyellow" 
+					"border-color": "greenyellow"
 				});
 				$(".boardTile").droppable("enable");
 			} else {
 				//If they arent all empty set all border colors to black and disable 
 				// all tiles (This is changed in a few lines)
 				$(".boardTile").css({
-					"border-color": "black" 
+					"border-color": "black"
 				})
 				$(".boardTile").droppable("disable");
-				for(let i = 0; i < occTiles.length; i++){
+				for (let i = 0; i < occTiles.length; i++) {
 					// Varbles for the tile ids of the current tile, previous tile and next tile
 					var avlTileIdL = "#" + tileIdHelper(i) + "_tile";
-					var avlTileIdC = "#" + tileIdHelper(i+1) + "_tile";
-					var avlTileIdR = "#" + tileIdHelper(i+2) + "_tile";
-					
+					var avlTileIdC = "#" + tileIdHelper(i + 1) + "_tile";
+					var avlTileIdR = "#" + tileIdHelper(i + 2) + "_tile";
+
 					// If there is a piece on a tile then enable the droppable and change the border color
-					if(occTiles[i] != "-1"){
+					if (occTiles[i] != "-1") {
 						console.log(occTiles[i]);
 						$(avlTileIdC).droppable("enable");
 						$("#" + occTiles[i]).draggable("disable");
 						//If the tile to the left is empty then enable and change color
-						if(occTiles[i-1] == "-1"){
+						if (occTiles[i - 1] == "-1") {
 							$(avlTileIdL).css({
-								"border-color": "greenyellow" 
+								"border-color": "greenyellow"
 							});
 							$(avlTileIdL).droppable("enable");
 							$("#" + occTiles[i]).draggable("enable");
 						}
 						//If the tile to the right is empty then enable and change color
-						if(occTiles[i+1] == "-1"){
+						if (occTiles[i + 1] == "-1") {
 							$(avlTileIdR).css({
-								"border-color": "greenyellow" 
+								"border-color": "greenyellow"
 							});
 							$(avlTileIdR).droppable("enable");
 							$("#" + occTiles[i]).draggable("enable");
 						}
-						
-					} else if(occTiles[i] == "-1" ){
-						if(occTiles[i-1] == "-1" && occTiles[i+1] == "-1"){
+
+					} else if (occTiles[i] == "-1") {
+						if (occTiles[i - 1] == "-1" && occTiles[i + 1] == "-1") {
 							$(avlTileIdC).css({
-								"border-color": "black" 
+								"border-color": "black"
 							})
 						}
 					}
 				}
-			}	
+			}
 		}
 
 		//Calc Score and displays current word
@@ -229,11 +229,11 @@ $(window).on('load', function () {
 				// If the tile isnt occupied and there is a tile either to the right or left
 				// of the current tile add to the score edge tiles are accounted for
 				if (occTiles[i] != "-1") {
-					if((occTiles[i+1] != "-1" && occTiles[i+1] != null) || 
-						(occTiles[i-1] != "-1" && occTiles[i-1] != null)){
+					if ((occTiles[i + 1] != "-1" && occTiles[i + 1] != null) ||
+						(occTiles[i - 1] != "-1" && occTiles[i - 1] != null)) {
 						var nameTmp = $("#" + occTiles[i]).css("background-image");
-						var name = nameTmp.substr(nameTmp.length-7, 1);
-						if(name == "k"){
+						var name = nameTmp.substr(nameTmp.length - 7, 1);
+						if (name == "k") {
 							var name = " ";
 						}
 						switch (tileOrder[i]) {
@@ -255,7 +255,7 @@ $(window).on('load', function () {
 				}
 			}
 			// Displays current word
-			$("#currentWord").html("Current Word: "+ curWord);
+			$("#currentWord").html("Current Word: " + curWord);
 			return score;
 		}
 
@@ -264,18 +264,18 @@ $(window).on('load', function () {
 		$("#nextWordBtn").click(function (e) {
 			// Temp onboard array so it doesnt get changed when the board is cleared
 			var tmpOnBoard = [];
-			for(let j = 0; j < OnBoard.length; j++){
+			for (let j = 0; j < OnBoard.length; j++) {
 				tmpOnBoard.push(OnBoard[j]);
 			}
 			//Calc full Score
 			fullScore += calcScore();
 			$("#Score").html("Score: " + fullScore + " + ( " + calcScore() + " )");
-			
+
 			// Calculates the word score and puts the pieces back on the dock
 			// Uses the jqueiry simulate libaray to move the pieces back to the dock
 			// Calculates the positionbased off of the current postion subtracted by the 
 			// Position that the piece started in
-			for(let i = 0; i < tmpOnBoard.length; i++){
+			for (let i = 0; i < tmpOnBoard.length; i++) {
 				var pId = "#" + tmpOnBoard[i];
 				var index = Number(tmpOnBoard[i].substr(5, 1)) - 1;
 				var offset = $(pId).offset();
@@ -283,27 +283,27 @@ $(window).on('load', function () {
 				var x = dockPos[index].left - offset.left;
 				$(pId).simulate("drag", {
 					dx: x,
-            		dy: y
+					dy: y
 				});
 				//Re-Rolls the piece
 				var gamePieceLt = gameBag.drawPiece();
-				if(gamePieceLt == " "){
+				if (gamePieceLt == " ") {
 					var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_Blank.jpg")';
-				} else if( gamePieceLt == "noPiece"){
+				} else if (gamePieceLt == "noPiece") {
 					var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_NP.png")';
-					$(pId).draggable( "destory" );
+					$(pId).draggable("destory");
 				} else {
 					var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_' + gamePieceLt + '.jpg")';
 				}
 				$(pId).css({
-					"background-image": imgPath,	
+					"background-image": imgPath,
 				})
 			}
 			//Displays the remaining pieces and check if the game can continue
 			$("#remainTiles").html("Remaining Tiles: " + gameBag.getAmount());
 			checkGameOver();
 		});
-		
+
 		// A button to re-draw the tiles on the rack
 		$("#reRollBtn").button();
 		$("#reRollBtn").click(function (e) {
@@ -316,12 +316,12 @@ $(window).on('load', function () {
 
 					if (pieceId === onDock[j]) {
 						var btnPiece = gameBag.drawPiece();
-						if(btnPiece == " "){
+						if (btnPiece == " ") {
 							var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_Blank.jpg")';
-						} else if( btnPiece == "noPiece"){
+						} else if (btnPiece == "noPiece") {
 							var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_NP.png")';
-							$(pieceId).draggable( "destory" );
-						}else {
+							$(pieceId).draggable("destory");
+						} else {
 							var imgPath = 'url("graphics_data/Scrabble_Tiles/Scrabble_Tile_' + btnPiece + '.jpg")';
 						}
 
@@ -338,15 +338,15 @@ $(window).on('load', function () {
 
 		//CHECK GAME OVER
 		// If the game is over if it is then display the game over screen 
-		function checkGameOver(){
-			if(gameOverStat == false){
-				if(gameBag.getAmount() < 1){
+		function checkGameOver() {
+			if (gameOverStat == false) {
+				if (gameBag.getAmount() < 1) {
 					$("#currentWord").hide();
 					$("#Score").hide();
 					$("#remainTiles").hide();
 					$("#nextWordBtn").hide();
 					$("#reRollBtn").hide();
-					
+
 					$("#gameOverInfo").show();
 					$("#gameOverInfo").prepend('<p>GAME OVER!</p>');
 					$("#gameOverInfo").prepend('<p>Final Score: ' + fullScore + '</p>');
@@ -361,7 +361,7 @@ $(window).on('load', function () {
 		//Refreshes the page to restart the game
 		$("#restartBtn").button();
 		$("#restartBtn").click(function (e) {
-			if(window.confirm("Are you sure you want to restart?")){
+			if (window.confirm("Are you sure you want to restart?")) {
 				window.location.reload();
 			}
 		});
