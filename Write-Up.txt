@@ -1,3 +1,10 @@
+PIECES WILL NOT LOAD IF PAGE IS OPENED LOCALLY BECAUSE JSON CANNOT BE READ.
+Error: Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///C:/Users/ccb11/Desktop/Repositories/hw-assignment-5-GUI1/graphics_data/pieces.json. (Reason: CORS request not http).
+
+OPEN USING THE GITHUB PAGES LINK AND EVERYTHING WORKS:
+https://ccb1139.github.io/hw-assignment-5-GUI1/
+
+
 Caleb Bergen
 Hw5 Write up
 

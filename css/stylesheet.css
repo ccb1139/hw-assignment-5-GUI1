@@ -112,6 +112,19 @@ body{
     
 }
 
+#warning{
+    text-align: center;
+    color: black;
+    width: fit-content;
+    margin: auto;
+    margin-top: 5px;
+    height: fit-content;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 
 
 
