@@ -9,6 +9,8 @@ updated by CB on December 15, 2021 at 7:23 PM
 This file contains the code for the board, the score and word displayed on 
 screen, the piece placement on the board
 
+USES: https://github.com/jquery/jquery-simulate
+ 
 */
 
 
