@@ -1,0 +1,80 @@
+Caleb Bergen
+Hw5 Write up
+
+All of the requirements for my game of scrabble work. I will explain how I did each part in this
+write up.
+
+• (4) letter tiles in the player’s “hand” are selected randomly from a data structure with the proper
+distribution of the letters (code!)
+
+I randomly draw a piece from a bag class that holds the correct amount 
+of pieces. Each time a piece is drawn, it is removed from the "bag" which is an array full of piece 
+objects.
+
+• (4) letter tiles can be dragged-and-dropped onto target Scrabble squares
+
+I use jquery UI draggable to drag the pieces onto the board tiles. The pieces correctly snap on the
+the tiles and doc
+
+• (4) program identifies which letter tile is dropped onto which Scrabble square
+
+This is done by getting the dropped tile id when the one is dropped onto a tile
+
+• (4) board includes at least two bonus squares
+
+These are inserted into the bag after the JSON pieces are put in
+
+• (4) score is tallied correctly, including consideration of bonus square multipliers
+
+I do this by identifying which pieces are on which board tiles, checking that they are all next
+to each other and then adding up the values of the pieces with the correct multipliers
+
+• (3) any number of words can be played until the player wishes to quit or depletes all tiles
+
+Once a player runs out of tiles a game over screen comes up and the player cannot draw anymore
+pieces
+
+• (3) the board is cleared after each round so that a new word can be played
+
+I do this by implementing the jquery simulate library that simulates the dragging and dropping of the
+pieces back onto the dock when every player presses the next word button. The score is correctly 
+tallied when this happens
+
+the jquery simulate library can be found here: https://github.com/jquery/jquery-simulate
+
+• (3) after playing a word, only the number of letter tiles needed to bring the player’s “hand” back
+to 7 tiles are selected
+
+As mentioned in the previous line I do this by implementing the jquery simulate library. I save the pieces
+initial positon when they are created and move them back to that position whenever the next word button is 
+pressed
+
+the jquery simulate library can be found here: https://github.com/jquery/jquery-simulate
+
+• (3) score is kept for multiple words until the user restart a new game (implement next vs. restart)
+
+The game score is added and kept for the duration of the game
+
+• (2) Tiles can only be dragged from the “rack” to the Scrabble board. If the user drops them anywhere
+else, they will be bounced back to the “rack”.
+
+I do this with the revert option for draggable. I use a custom function that uses simulate because the
+the regular option didn't recalculate the placeable tiles when a piece was dragged off the board to an invalid 
+spot.
+
+the jquery simulate library can be found here: https://github.com/jquery/jquery-simulate
+
+• (2) Once the tile is placed on the Scrabble board, it can be moved back to the “rack”
+
+I use draggable for this
+
+• (2) Except for the first letter, all sub-subsequent letters must be placed directly next to or below
+another letter with no space. Else, they will bounce back to the “rack”
+
+I do this by calculating which tiles have pieces on them and only enabling the droppable that have are
+empty that also have a nonempty dropable directly next to them. If they are placed on a disabled droppable
+then they are reverted
+
+• (2) user can always restart the game.
+There is a restart button that refreshes the page
+
