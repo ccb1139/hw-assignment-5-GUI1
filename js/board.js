@@ -1,3 +1,17 @@
+/*
+File: board.js
+GUI Assignment: hw5
+Caleb Bergen, UMass Lowell Computer Science, caleb_bergen@student.uml.edu
+Copyright (c) 2021 by Bergen. All rights reserved. May be freely copied or
+excerpted for educational purposes with credit to the author.
+updated by CB on December 15, 2021 at 7:23 PM
+
+This file contains the code for the board, the score and word displayed on 
+screen, the piece placement on the board
+
+*/
+
+
 $(window).on('load', function () {
 	$(function () {
 		// 1 = reg tile, 2 = double word score, 3 = double letter score

@@ -1,3 +1,18 @@
+/*
+File: bagProtoype.js
+GUI Assignment: hw5
+Caleb Bergen, UMass Lowell Computer Science, caleb_bergen@student.uml.edu
+Copyright (c) 2021 by Bergen. All rights reserved. May be freely copied or
+excerpted for educational purposes with credit to the author.
+updated by CB on December 15, 2021 at 7:23 PM
+
+This file contains the data structures for the piece objects and bag object 
+that hold the game pieces
+
+*/
+
+
+
 // Piece class. Each piece holds a letter, a value, and an amount.
 class Piece {
     constructor(_letter, _value, _amount) {

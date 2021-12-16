@@ -1,3 +1,16 @@
+/*
+File: piecesAndHolder.js
+GUI Assignment: hw5
+Caleb Bergen, UMass Lowell Computer Science, caleb_bergen@student.uml.edu
+Copyright (c) 2021 by Bergen. All rights reserved. May be freely copied or
+excerpted for educational purposes with credit to the author.
+updated by CB on December 15, 2021 at 7:23 PM
+
+This file contains the code to set up the pieces and piece holder
+
+*/
+
+
 // Arrays to hold the original doc position and the last dropped postion of each piece
 const dockPos = [];
 const currentPos = [];
