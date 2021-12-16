@@ -174,13 +174,16 @@ $(window).on('load', function () {
 					
 					// If there is a piece on a tile then enable the droppable and change the border color
 					if(occTiles[i] != "-1"){
+						console.log(occTiles[i]);
 						$(avlTileIdC).droppable("enable");
+						$("#" + occTiles[i]).draggable("disable");
 						//If the tile to the left is empty then enable and change color
 						if(occTiles[i-1] == "-1"){
 							$(avlTileIdL).css({
 								"border-color": "greenyellow" 
 							});
 							$(avlTileIdL).droppable("enable");
+							$("#" + occTiles[i]).draggable("enable");
 						}
 						//If the tile to the right is empty then enable and change color
 						if(occTiles[i+1] == "-1"){
@@ -188,7 +191,9 @@ $(window).on('load', function () {
 								"border-color": "greenyellow" 
 							});
 							$(avlTileIdR).droppable("enable");
+							$("#" + occTiles[i]).draggable("enable");
 						}
+						
 					} else if(occTiles[i] == "-1" ){
 						if(occTiles[i-1] == "-1" && occTiles[i+1] == "-1"){
 							$(avlTileIdC).css({

@@ -70,7 +70,6 @@ $(window).on('load', function() {
                     setTimeout(() => {revertHelper(tmpNameT, indTmp, pPosTmp);}, 10); 
                 } else {
                     currentPos[indTmp - 1] = pPosTmp;
-                    console.log(pPosTmp);
                 }
             },
             //Saves the last valid piece position
